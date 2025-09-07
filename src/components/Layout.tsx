@@ -18,45 +18,47 @@ const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-gradient-sky">
-      <nav className="bg-card/80 backdrop-blur-sm border-b shadow-card sticky top-0 z-50">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <div className="h-8 w-8 bg-gradient-ocean rounded-lg flex items-center justify-center">
-                  <Activity className="h-5 w-5 text-primary-foreground" />
-                </div>
-                <span className="ml-2 text-xl font-bold text-foreground">
-                  Blue Carbon Registry
-                </span>
-              </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                {navigation.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = location.pathname === item.href;
-                  return (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className={cn(
-                        "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-smooth",
-                        isActive
-                          ? "border-primary text-primary"
-                          : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
-                      )}
-                    >
-                      <Icon className="h-4 w-4 mr-2" />
-                      {item.name}
-                    </Link>
-                  );
-                })}
-              </div>
+    <div className="min-h-screen bg-gradient-sky flex">
+      {/* Left Sidebar Navigation */}
+      <nav className="w-64 bg-card/80 backdrop-blur-sm border-r shadow-card flex flex-col">
+        <div className="p-6 border-b">
+          <div className="flex items-center">
+            <div className="h-8 w-8 bg-gradient-ocean rounded-lg flex items-center justify-center">
+              <Activity className="h-5 w-5 text-primary-foreground" />
             </div>
+            <span className="ml-2 text-xl font-bold text-foreground">
+              Blue Ledger
+            </span>
+          </div>
+        </div>
+        
+        <div className="flex-1 py-6">
+          <div className="space-y-2 px-3">
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={cn(
+                    "flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-smooth",
+                    isActive
+                      ? "bg-primary/10 text-primary border-r-2 border-primary"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  )}
+                >
+                  <Icon className="h-5 w-5 mr-3" />
+                  {item.name}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </nav>
-      <main className="flex-1">
+
+      {/* Main Content Area */}
+      <main className="flex-1 overflow-auto">
         {children}
       </main>
     </div>

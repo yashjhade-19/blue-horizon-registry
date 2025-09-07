@@ -10,7 +10,7 @@ const Landing = () => {
       <section className="relative py-20 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            Blue Carbon Registry
+            Blue Ledger
             <span className="block text-primary">& MRV System</span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
