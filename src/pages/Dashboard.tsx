@@ -14,10 +14,10 @@ const Dashboard = () => {
   ];
 
   const recentActivities = [
-    { id: 1, activity: "New project verified in Costa Rica", time: "2 hours ago", status: "success" },
-    { id: 2, activity: "Satellite data updated for Philippines project", time: "4 hours ago", status: "info" },
-    { id: 3, activity: "Carbon credits issued for Indonesia mangroves", time: "1 day ago", status: "success" },
-    { id: 4, activity: "Field verification pending in Kenya", time: "2 days ago", status: "warning" },
+    { id: 1, activity: "New project verified in Kerala", time: "2 hours ago", status: "success" },
+    { id: 2, activity: "Satellite data updated for Tamil Nadu project", time: "4 hours ago", status: "info" },
+    { id: 3, activity: "Carbon credits issued for Maharashtra mangroves", time: "1 day ago", status: "success" },
+    { id: 4, activity: "Field verification pending in Gujarat", time: "2 days ago", status: "warning" },
   ];
 
   return (
@@ -53,9 +53,9 @@ const Dashboard = () => {
           trend="up"
         />
         <StatsCard
-          title="Countries Covered"
-          value="23"
-          change="+2 new regions"
+          title="States Covered"
+          value="28"
+          change="+3 new states"
           icon={MapPin}
           trend="up"
         />
@@ -75,7 +75,7 @@ const Dashboard = () => {
               <div className="text-center">
                 <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
                 <p className="text-muted-foreground">Interactive map showing project locations</p>
-                <p className="text-sm text-muted-foreground/70">64 active projects across 23 countries</p>
+                <p className="text-sm text-muted-foreground/70">64 active projects across 28 Indian states</p>
               </div>
             </div>
           </CardContent>

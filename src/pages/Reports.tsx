@@ -10,11 +10,11 @@ const Reports = () => {
   ];
 
   const regionData = [
-    { region: "Southeast Asia", projects: 24, credits: 4890 },
-    { region: "Central America", projects: 15, credits: 3124 },
-    { region: "East Africa", projects: 12, credits: 2567 },
-    { region: "Middle East", projects: 8, credits: 1879 },
-    { region: "Others", projects: 5, credentials: 1234 },
+    { region: "Western India", projects: 24, credits: 4890 },
+    { region: "Southern India", projects: 15, credits: 3124 },
+    { region: "Eastern India", projects: 12, credits: 2567 },
+    { region: "Northern India", projects: 8, credits: 1879 },
+    { region: "Central India", projects: 5, credits: 1234 },
   ];
 
   const monthlyGrowth = [
@@ -54,8 +54,8 @@ const Reports = () => {
             <div className="flex items-center gap-3">
               <Globe className="h-8 w-8 text-primary" />
               <div>
-                <p className="text-2xl font-bold text-foreground">23</p>
-                <p className="text-sm text-muted-foreground">Countries</p>
+                <p className="text-2xl font-bold text-foreground">28</p>
+                <p className="text-sm text-muted-foreground">States</p>
               </div>
             </div>
           </CardContent>
