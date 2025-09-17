@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import React, { useEffect, useRef } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 interface ProjectLocation {
   id: string;
@@ -50,106 +48,65 @@ const projectLocations: ProjectLocation[] = [
 
 const IndiaMap = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const [mapboxToken, setMapboxToken] = useState('');
-  const [showTokenInput, setShowTokenInput] = useState(true);
+  const map = useRef<L.Map | null>(null);
 
-  const initializeMap = (token: string) => {
-    if (!mapContainer.current || !token) return;
+  useEffect(() => {
+    if (!mapContainer.current || map.current) return;
 
-    mapboxgl.accessToken = token;
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
-      center: [78.9629, 20.5937], // Center of India
-      zoom: 4.5
+    // Initialize Leaflet map
+    map.current = L.map(mapContainer.current).setView([20.5937, 78.9629], 5);
+
+    // Add OpenStreetMap tiles (free, no API key needed)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map.current);
+
+    // Custom marker icon (blue)
+    const blueIcon = L.divIcon({
+      className: 'custom-marker',
+      html: '<div style="background-color: #0ea5e9; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+      iconSize: [20, 20],
+      iconAnchor: [10, 10]
     });
 
-    // Add navigation controls
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
     // Add markers for each project location
+    const bounds = L.latLngBounds([]);
+    
     projectLocations.forEach((location) => {
-      // Create a marker
-      const marker = new mapboxgl.Marker({
-        color: '#0ea5e9'
-      })
-        .setLngLat(location.coordinates)
-        .addTo(map.current!);
+      const marker = L.marker([location.coordinates[1], location.coordinates[0]], {
+        icon: blueIcon
+      }).addTo(map.current!);
 
       // Create popup content
       const popupContent = `
-        <div class="p-3">
-          <h3 class="font-semibold text-sm mb-2">${location.name}</h3>
-          <p class="text-xs text-muted-foreground mb-1">State: ${location.state}</p>
-          <p class="text-xs text-muted-foreground mb-1">Area: ${location.area} hectares</p>
-          <p class="text-xs">
-            <span class="inline-block px-2 py-1 rounded-full text-xs font-medium ${
-              location.status === 'Active' ? 'bg-green-100 text-green-800' :
-              location.status === 'Completed' ? 'bg-blue-100 text-blue-800' :
-              'bg-yellow-100 text-yellow-800'
-            }">
-              ${location.status}
-            </span>
-          </p>
+        <div style="padding: 12px; min-width: 200px;">
+          <h3 style="font-weight: 600; font-size: 14px; margin-bottom: 8px; color: #1f2937;">${location.name}</h3>
+          <p style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">State: ${location.state}</p>
+          <p style="font-size: 12px; color: #6b7280; margin-bottom: 8px;">Area: ${location.area} hectares</p>
+          <span style="display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; ${
+            location.status === 'Active' ? 'background-color: #dcfce7; color: #166534;' :
+            location.status === 'Completed' ? 'background-color: #dbeafe; color: #1e40af;' :
+            'background-color: #fef3c7; color: #92400e;'
+          }">
+            ${location.status}
+          </span>
         </div>
       `;
 
-      // Create and attach popup
-      const popup = new mapboxgl.Popup({
-        offset: 25,
-        closeButton: true,
-        closeOnClick: false
-      }).setHTML(popupContent);
-
-      marker.setPopup(popup);
+      marker.bindPopup(popupContent);
+      bounds.extend([location.coordinates[1], location.coordinates[0]]);
     });
 
     // Fit map to show all markers
-    const bounds = new mapboxgl.LngLatBounds();
-    projectLocations.forEach(location => bounds.extend(location.coordinates));
-    map.current.fitBounds(bounds, { padding: 50 });
-
-    setShowTokenInput(false);
-  };
-
-  const handleTokenSubmit = () => {
-    if (mapboxToken.trim()) {
-      initializeMap(mapboxToken.trim());
+    if (bounds.isValid()) {
+      map.current.fitBounds(bounds, { padding: [20, 20] });
     }
-  };
 
-  useEffect(() => {
     return () => {
       map.current?.remove();
+      map.current = null;
     };
   }, []);
-
-  if (showTokenInput) {
-    return (
-      <div className="h-64 bg-muted rounded-lg flex items-center justify-center">
-        <div className="text-center p-6 max-w-md">
-          <h3 className="font-semibold mb-2">Mapbox Token Required</h3>
-          <p className="text-sm text-muted-foreground mb-4">
-            Please enter your Mapbox public token to display the interactive map.
-            Get yours at <a href="https://mapbox.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">mapbox.com</a>
-          </p>
-          <div className="space-y-3">
-            <Input
-              placeholder="pk.eyJ1IjoieW91cm..."
-              value={mapboxToken}
-              onChange={(e) => setMapboxToken(e.target.value)}
-              className="text-sm"
-            />
-            <Button onClick={handleTokenSubmit} size="sm" className="w-full">
-              Load Map
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="relative h-64 rounded-lg overflow-hidden">
