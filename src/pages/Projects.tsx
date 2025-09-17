@@ -1,8 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Trees, Award } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Projects = () => {
+  const navigate = useNavigate();
+  
   const projects = [
     {
       id: 1,
@@ -164,7 +167,11 @@ const Projects = () => {
 
               {/* Projects */}
               {projects.map((project) => (
-                <div key={project.id} className="grid grid-cols-1 md:grid-cols-7 gap-4 p-4 border border-border rounded-lg hover:bg-muted/20 transition-smooth">
+                <div 
+                  key={project.id} 
+                  className="grid grid-cols-1 md:grid-cols-7 gap-4 p-4 border border-border rounded-lg hover:bg-muted/20 transition-smooth cursor-pointer"
+                  onClick={() => navigate(`/projects/${project.id}`)}
+                >
                   <div className="font-medium text-foreground">
                     <div className="md:hidden text-xs text-muted-foreground mb-1">User Name</div>
                     {project.userName}
