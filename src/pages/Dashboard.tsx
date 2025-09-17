@@ -1,17 +1,10 @@
 import StatsCard from "@/components/StatsCard";
+import IndiaMap from "@/components/IndiaMap";
+import CarbonCreditsChart from "@/components/CarbonCreditsChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trees, Award, Activity, MapPin, BarChart3 } from "lucide-react";
+import { Trees, Award, Activity, MapPin } from "lucide-react";
 
 const Dashboard = () => {
-  // Mock data for charts
-  const carbonCreditsData = [
-    { month: 'Jan', credits: 1200 },
-    { month: 'Feb', credits: 1500 },
-    { month: 'Mar', credits: 1800 },
-    { month: 'Apr', credits: 2200 },
-    { month: 'May', credits: 2800 },
-    { month: 'Jun', credits: 3200 },
-  ];
 
   const recentActivities = [
     { id: 1, activity: "New project verified in Kerala", time: "2 hours ago", status: "success" },
@@ -71,13 +64,7 @@ const Dashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-64 bg-muted rounded-lg flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
-                <p className="text-muted-foreground">Interactive map showing project locations</p>
-                <p className="text-sm text-muted-foreground/70">64 active projects across 28 Indian states</p>
-              </div>
-            </div>
+            <IndiaMap />
           </CardContent>
         </Card>
 
@@ -90,20 +77,7 @@ const Dashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-64 bg-muted rounded-lg flex items-center justify-center">
-              <div className="text-center">
-                <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
-                <p className="text-muted-foreground">Line chart showing monthly carbon credit generation</p>
-                <div className="mt-4 grid grid-cols-3 gap-4 text-sm">
-                  {carbonCreditsData.slice(-3).map((data, index) => (
-                    <div key={index} className="text-center">
-                      <div className="font-semibold text-foreground">{data.credits}</div>
-                      <div className="text-muted-foreground">{data.month}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <CarbonCreditsChart />
           </CardContent>
         </Card>
       </div>
